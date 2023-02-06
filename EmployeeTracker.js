@@ -67,12 +67,41 @@ connection.connect(function (err) {
             }
         ])
         .then((answers) => {
-            console.log(answers);
+            
+            connection.query("select id from role where title = ?", [answers.role_name], (error, test) => {
+                const [first_name, last_name] = answers.manager_name.split(" ");
+                connection.query("select id from employee where first_name = ? and last_name = ?", [first_name, last_name], (error, test2) => {
+                    const [{id:role_id}] = test;
+                        const [{id:manager_id}] = test2;
+                    connection.query("insert into employee (first_name, last_name, role_id, manager_id) values (?,?,?,?)", [answers.first_name, answers.last_name, role_id, manager_id]);
+                });
+            });
+            
 
             // 5. Create the employee record
 
         })
     }
+    if(answers.action == "View All Departments"){
+        connection.query("select dept_name from dept", ((error, answers) => {
+            console.log(answers);
+
+        }));
+    };
+    if(answers.action == "View All Roles"){
+    connection.query("select title from role", ((error, answers) => {
+        console.log(answers);
+}))
+       
+    }
+
+    if(answers.action == "View All Employees"){
+        connection.query("select first_name, last_name from employee", ((error, answers) => {
+            console.log(answers);
+    }))
+           
+        }
+
       });
 });
 
