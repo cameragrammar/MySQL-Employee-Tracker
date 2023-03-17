@@ -1,9 +1,5 @@
-//Dependencies
-const mysql = require('mysql');
 const inquirer = require('inquirer');
-const consoleTable = require('console.table');
-const util = require('util');
-
+const mysql = require('mysql');
 
 //Connect to MySQL
 const connection = mysql.createConnection({
@@ -83,7 +79,7 @@ connection.connect(function (err) {
         })
     }
     if(answers.action == "View All Departments"){
-        connection.query("select dept_name from dept", ((error, answers) => {
+        connection.query("select department_name from department", ((error, answers) => {
             console.log(answers);
 
         }));
@@ -107,7 +103,7 @@ connection.connect(function (err) {
 
 //Welcome message
 console.table(
-    "\m-------------- EMPLOYEE TRACKER --------------\m"
+    "\m------ EMPLOYEE TRACKER ------\m"
 );
 
 function askName() {
