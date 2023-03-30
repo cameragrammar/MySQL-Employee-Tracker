@@ -1,14 +1,18 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
+const cTable = require('console.table');
 
 //Connect to MySQL
-const connection = mysql.createConnection({
+const connection = mysql.createConnection(
+{
     host: 'localhost',
     port: 3306,
     user: 'root',
     password: 'password',
     database: 'employee_DB'
-});
+},
+console.log('connected to the employee_db database')    
+);
 
 connection.connect(function (err) {
     if(err) throw err;
@@ -31,7 +35,7 @@ connection.connect(function (err) {
   ])
   .then((answers) => {
     // Use user feedback for... whatever!!
-    console.log(answers);
+    //console.log(answers);
 
     if(answers.action == "Add an Employee"){
         // TODO: 
@@ -79,21 +83,30 @@ connection.connect(function (err) {
         })
     }
     if(answers.action == "View All Departments"){
-        connection.query("select department_name from department", ((error, answers) => {
-            console.log(answers);
-
+        connection.query("select department_name, id from department", ((err, results) => {
+            if(err) {
+                throw err;
+            }
+            console.table(results);
+            //console.log(results);
         }));
     };
     if(answers.action == "View All Roles"){
-    connection.query("select title from role", ((error, answers) => {
-        console.log(answers);
+    connection.query("select title from role", ((err, results) => {
+        if(err) {
+            throw err;
+        }
+        console.table(results);
 }))
        
     }
 
     if(answers.action == "View All Employees"){
-        connection.query("select first_name, last_name from employee", ((error, answers) => {
-            console.log(answers);
+        connection.query("select first_name, last_name from employee", ((err, results) => {
+            if(err) {
+                throw err;
+            }
+            console.table(results);
     }))
            
         }
